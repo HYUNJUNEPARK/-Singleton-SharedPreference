@@ -43,26 +43,15 @@ singleton_sharedPreferences</br>
 -해당 파일은 어플리케이션이 삭제되기 전까지 보존됨.</br>
 <br></br>
 
+**EncryptedSharedPreferences**</br>
+- AndroidKeyStore 에 마스터 키를 저장하고 마스터 키로 데이터를 암호화한 SharedPreference</br>
+<br></br>
+
 **SharedPreferences+Singleton**</br>
 -SharedPreferences 는 앱의 어디서든 전역적으로 사용하기 때문에 싱글톤 패턴을 사용해서 어디서든 접근 가능하게 만드는 것이 좋음</br>
-
-```kotlin
-//사용법
-class MainActivity : AppCompatActivity() {
-    private lateinit var spm: SharedPreferenceManager
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        spm = SharedPreferenceManager.getInstance(this)!!
-
-        spm!!.putString("sp1", "test1")
-    }
-}
-```
 <br></br>
----
 
+---
 
 kotlin 싱글톤 패턴</br>
 https://junyoung-developer.tistory.com/192</br>

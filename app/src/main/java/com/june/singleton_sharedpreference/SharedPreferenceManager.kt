@@ -3,6 +3,20 @@ package com.june.singleton_sharedpreference
 import android.content.Context
 import android.content.SharedPreferences
 
+/**
+ * XML 파일 위치
+ * data > data > 패키지명 > shared_prefs > pref.xml
+ *
+ *
+ * SharedPreferenceManager 인스턴스 초기화
+ *  private lateinit var spm: SharedPreferencesManager
+ *      ...
+ *  override fun onCreate(savedInstanceState: Bundle?) {
+ *      ...
+ *      spm = SharedPreferencesManager.getInstance(this)!!
+ *  }
+ */
+
 class SharedPreferenceManager {
     companion object {
         const val PREFERENCE_NAME = "pref"
