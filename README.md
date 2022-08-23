@@ -1,6 +1,16 @@
 SharedPreferences / EncryptedSharedPreferences / Singleton</br>
 ---
 
+바로가기</br>
+
+**EncryptedSharedPreferencesManager**</br>
+https://github.com/HYUNJUNEPARK/-Singleton-SharedPreference/blob/main/app/src/main/java/com/june/singleton_sharedpreference/EncryptedSharedPreferencesManager.kt</br>
+
+**SharedPreferenceManager**</br>
+https://github.com/HYUNJUNEPARK/-Singleton-SharedPreference/blob/main/app/src/main/java/com/june/singleton_sharedpreference/SharedPreferenceManager.kt</br>
+<br></br>
+
+
 **Singleton**</br>
 - 한 번의 선언으로 모든 클래스에서 전역으로 사용이 가능한(아무데서나 접근 가능한) 필드나 메서드를 만드는 것</br>
 - 어떤 클래스의 인스턴스는 오직 하나임을 보장하며, 이 인스턴스는 전역에서 접근할 수 있는 디자인 패턴</br>
