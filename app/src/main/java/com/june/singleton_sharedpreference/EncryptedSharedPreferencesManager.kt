@@ -52,10 +52,8 @@ class EncryptedSharedPreferencesManager {
     }
 
     init {
-        /**
-         *  EncryptedSharedPreferences.PrefKeyEncryptionScheme: The scheme to use for encrypting keys.
-         *  EncryptedSharedPreferences.PrefValueEncryptionScheme: The scheme to use for encrypting values.
-         */
+        // EncryptedSharedPreferences.PrefKeyEncryptionScheme: The scheme to use for encrypting keys.
+        // EncryptedSharedPreferences.PrefValueEncryptionScheme: The scheme to use for encrypting values.
         prefs = EncryptedSharedPreferences.create(
             context,
             PREFERENCE_NAME,
@@ -102,6 +100,22 @@ class EncryptedSharedPreferencesManager {
     fun putBoolean(key: String?, value: Boolean) {
         prefsEditor.apply {
             putBoolean(key, value)
+            apply()
+        }
+    }
+
+    fun getKeyList(): List<String>? {
+        val keys:Map<String, *> = prefs.all
+        val keyList:MutableList<String> = mutableListOf()
+        for ((key, value) in keys.entries) {
+            keyList.add(key)
+        }
+        return keyList
+    }
+
+    fun remove(key: String) {
+        prefsEditor.apply {
+            remove(key)
             apply()
         }
     }

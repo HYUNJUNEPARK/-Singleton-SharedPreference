@@ -35,7 +35,10 @@ class SharedPreferenceManager {
     }
 
     init {
-        prefs = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        prefs = context.getSharedPreferences(
+            PREFERENCE_NAME,
+            Context.MODE_PRIVATE
+        )
         prefsEditor = prefs.edit()
     }
 
@@ -68,6 +71,22 @@ class SharedPreferenceManager {
     fun putBoolean(key: String?, value: Boolean) {
         prefsEditor.apply {
             putBoolean(key, value)
+            apply()
+        }
+    }
+
+    fun getKeyList(): List<String>? {
+        val keys:Map<String, *> = prefs.all
+        val keyList:MutableList<String> = mutableListOf()
+        for ((key, value) in keys.entries) {
+            keyList.add(key)
+        }
+        return keyList
+    }
+
+    fun remove(key: String) {
+        prefsEditor.apply {
+            remove(key)
             apply()
         }
     }
