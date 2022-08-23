@@ -90,4 +90,11 @@ class SharedPreferenceManager {
             apply()
         }
     }
+
+    fun removeAll() {
+        prefsEditor.apply {
+            clear()
+            apply()
+        }
+    }
 }

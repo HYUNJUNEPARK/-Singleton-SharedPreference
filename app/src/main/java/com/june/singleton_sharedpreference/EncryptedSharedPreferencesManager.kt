@@ -119,4 +119,11 @@ class EncryptedSharedPreferencesManager {
             apply()
         }
     }
+
+    fun removeAll() {
+        prefsEditor.apply {
+            clear()
+            apply()
+        }
+    }
 }
