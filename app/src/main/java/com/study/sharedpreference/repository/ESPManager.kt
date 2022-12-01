@@ -1,4 +1,4 @@
-package com.study.sharedpreference
+package com.study.sharedpreference.repository
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,26 +8,14 @@ import androidx.security.crypto.MasterKey
 /**
  * Android M (API 23) 이상 사용 가능
  *
- *
  * 빌드 방법
  * implementation 'androidx.security:security-crypto-ktx:1.1.0-alpha03'
  * or
  * File > Project Structure > Dependencies > app > Declared Dependencies [+]
  * > Library Dependency> 'androidx.security' 검색 > security-crypto 최신 버전을 설치
  *
- *
  * XML 파일 위치
  * data > data > 패키지명 > shared_prefs > encrypted_pref.xml
- *
- *
- * EncryptedSharedPreferencesManager 인스턴스 초기화
- *  private lateinit var encryptedSpm: EncryptedSharedPreferencesManager
- *      ...
- *  override fun onCreate(savedInstanceState: Bundle?) {
- *      ...
- *      encryptedSpm = EncryptedSharedPreferencesManager.getInstance(this)!!
- *  }
- *
  *
  * MasterKey 정보
  * 키스토어 : AndroidKeyStore
@@ -36,12 +24,12 @@ import androidx.security.crypto.MasterKey
 
 class ESPManager private constructor(context: Context) {
     companion object {
-        const val FILE_NAME = "encrypted_pref"
+        const val ENCRYPTED_PREF_FILE_NAME = "encrypted_pref"
         private var instance: ESPManager? = null
         private lateinit var prefs: SharedPreferences
         private lateinit var prefsEditor: SharedPreferences.Editor
 
-        fun getInstance(_context: Context): ESPManager? {
+        fun getInstance(_context: Context): ESPManager {
             return instance ?: synchronized(this) {
                 instance ?: ESPManager(_context).also {
                     instance = it
@@ -60,7 +48,7 @@ class ESPManager private constructor(context: Context) {
         // EncryptedSharedPreferences.PrefValueEncryptionScheme: The scheme to use for encrypting values.
         prefs = EncryptedSharedPreferences.create(
             context,
-            FILE_NAME,
+            ENCRYPTED_PREF_FILE_NAME,
             masterKeyAlias,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
