@@ -1,4 +1,4 @@
-package com.june.singleton_sharedpreference
+package com.study.sharedpreference
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

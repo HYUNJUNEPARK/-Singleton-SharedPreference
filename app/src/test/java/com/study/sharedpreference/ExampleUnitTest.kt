@@ -1,4 +1,4 @@
-package com.june.singleton_sharedpreference
+package com.study.sharedpreference
 
 import org.junit.Test
 

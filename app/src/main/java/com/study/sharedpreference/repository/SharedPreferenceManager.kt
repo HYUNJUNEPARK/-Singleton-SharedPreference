@@ -1,4 +1,4 @@
-package com.june.singleton_sharedpreference
+package com.study.sharedpreference.repository
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,37 +6,27 @@ import android.content.SharedPreferences
 /**
  * XML 파일 위치
  * data > data > 패키지명 > shared_prefs > pref.xml
- *
- *
- * SharedPreferenceManager 인스턴스 초기화
- *  private lateinit var spm: SharedPreferencesManager
- *      ...
- *  override fun onCreate(savedInstanceState: Bundle?) {
- *      ...
- *      spm = SharedPreferencesManager.getInstance(this)!!
- *  }
  */
 
-class SharedPreferenceManager {
+class SharedPreferenceManager(context: Context) {
     companion object {
-        const val PREFERENCE_NAME = "pref"
+        const val PREF_FILE_NAME = "pref"
         private var instance: SharedPreferenceManager? = null
-        private lateinit var context: Context
         private lateinit var prefs: SharedPreferences
         private lateinit var prefsEditor: SharedPreferences.Editor
 
-        fun getInstance(_context: Context): SharedPreferenceManager? {
-            if (instance == null) {
-                context = _context
-                instance = SharedPreferenceManager()
+        fun getInstance(_context: Context): SharedPreferenceManager {
+            return instance ?: synchronized(this) {
+                instance ?: SharedPreferenceManager(_context).also {
+                    instance = it
+                }
             }
-            return instance
         }
     }
 
     init {
         prefs = context.getSharedPreferences(
-            PREFERENCE_NAME,
+            PREF_FILE_NAME,
             Context.MODE_PRIVATE
         )
         prefsEditor = prefs.edit()
@@ -75,7 +65,7 @@ class SharedPreferenceManager {
         }
     }
 
-    fun getKeyList(): List<String>? {
+    fun getKeyList(): List<String> {
         val keys:Map<String, *> = prefs.all
         val keyList:MutableList<String> = mutableListOf()
         for ((key, value) in keys.entries) {
