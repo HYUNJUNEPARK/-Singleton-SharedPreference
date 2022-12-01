@@ -1,74 +1,45 @@
-package com.june.singleton_sharedpreference
+package com.study.sharedpreference
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 
 /**
- * Android M (API 23) 이상 사용 가능
- *
- *
- * 빌드 방법
- * implementation 'androidx.security:security-crypto-ktx:1.1.0-alpha03'
- * or
- * File > Project Structure > Dependencies > app > Declared Dependencies [+]
- * > Library Dependency> 'androidx.security' 검색 > security-crypto 최신 버전을 설치
- *
- *
  * XML 파일 위치
- * data > data > 패키지명 > shared_prefs > encrypted_pref.xml
+ * data > data > 패키지명 > shared_prefs > pref.xml
  *
  *
- * EncryptedSharedPreferencesManager 인스턴스 초기화
- *  private lateinit var encryptedSpm: EncryptedSharedPreferencesManager
+ * SharedPreferenceManager 인스턴스 초기화
+ *  private lateinit var spm: SharedPreferencesManager
  *      ...
  *  override fun onCreate(savedInstanceState: Bundle?) {
  *      ...
- *      encryptedSpm = EncryptedSharedPreferencesManager.getInstance(this)!!
+ *      spm = SharedPreferencesManager.getInstance(this)!!
  *  }
- *
- *
- * MasterKey 정보
- * 키스토어 : AndroidKeyStore
- * keyAlias : "_androidx_security_master_key_"
  */
 
-class EncryptedSharedPreferencesManager {
+class SharedPreferenceManager {
     companion object {
-        const val PREFERENCE_NAME = "encrypted_pref"
-        private var instance: EncryptedSharedPreferencesManager? = null
+        const val PREFERENCE_NAME = "pref"
+        private var instance: SharedPreferenceManager? = null
         private lateinit var context: Context
         private lateinit var prefs: SharedPreferences
         private lateinit var prefsEditor: SharedPreferences.Editor
 
-        fun getInstance(_context: Context):EncryptedSharedPreferencesManager? {
+        fun getInstance(_context: Context): SharedPreferenceManager? {
             if (instance == null) {
                 context = _context
-                instance = EncryptedSharedPreferencesManager()
+                instance = SharedPreferenceManager()
             }
             return instance
         }
     }
 
     init {
-        // EncryptedSharedPreferences.PrefKeyEncryptionScheme: The scheme to use for encrypting keys.
-        // EncryptedSharedPreferences.PrefValueEncryptionScheme: The scheme to use for encrypting values.
-        prefs = EncryptedSharedPreferences.create(
-            context,
+        prefs = context.getSharedPreferences(
             PREFERENCE_NAME,
-            generateMasterKey(),
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            Context.MODE_PRIVATE
         )
         prefsEditor = prefs.edit()
-    }
-
-    private fun generateMasterKey(): MasterKey {
-        return MasterKey
-            .Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
     }
 
     fun getString(key: String?, defValue: String?): String {
