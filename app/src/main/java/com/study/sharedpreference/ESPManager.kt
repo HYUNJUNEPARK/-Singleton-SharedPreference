@@ -34,41 +34,38 @@ import androidx.security.crypto.MasterKey
  * keyAlias : "_androidx_security_master_key_"
  */
 
-class EncryptedSharedPreferencesManager {
+class ESPManager private constructor(context: Context) {
     companion object {
-        const val PREFERENCE_NAME = "encrypted_pref"
-        private var instance: EncryptedSharedPreferencesManager? = null
-        private lateinit var context: Context
+        const val FILE_NAME = "encrypted_pref"
+        private var instance: ESPManager? = null
         private lateinit var prefs: SharedPreferences
         private lateinit var prefsEditor: SharedPreferences.Editor
 
-        fun getInstance(_context: Context):EncryptedSharedPreferencesManager? {
-            if (instance == null) {
-                context = _context
-                instance = EncryptedSharedPreferencesManager()
+        fun getInstance(_context: Context): ESPManager? {
+            return instance ?: synchronized(this) {
+                instance ?: ESPManager(_context).also {
+                    instance = it
+                }
             }
-            return instance
         }
     }
 
     init {
+        val masterKeyAlias = MasterKey
+            .Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
         // EncryptedSharedPreferences.PrefKeyEncryptionScheme: The scheme to use for encrypting keys.
         // EncryptedSharedPreferences.PrefValueEncryptionScheme: The scheme to use for encrypting values.
         prefs = EncryptedSharedPreferences.create(
             context,
-            PREFERENCE_NAME,
-            generateMasterKey(),
+            FILE_NAME,
+            masterKeyAlias,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
         prefsEditor = prefs.edit()
-    }
-
-    private fun generateMasterKey(): MasterKey {
-        return MasterKey
-            .Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
     }
 
     fun getString(key: String?, defValue: String?): String {
