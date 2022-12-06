@@ -8,25 +8,26 @@ import android.content.SharedPreferences
  * data > data > 패키지명 > shared_prefs > pref.xml
  */
 
-class SharedPreferenceManager(context: Context) {
+class SPManager(context: Context) {
     companion object {
-        const val PREF_FILE_NAME = "pref"
-        private var instance: SharedPreferenceManager? = null
-        private lateinit var prefs: SharedPreferences
-        private lateinit var prefsEditor: SharedPreferences.Editor
+        private var instance: SPManager? = null
 
-        fun getInstance(_context: Context): SharedPreferenceManager {
+        fun getInstance(_context: Context): SPManager {
             return instance ?: synchronized(this) {
-                instance ?: SharedPreferenceManager(_context).also {
+                instance ?: SPManager(_context).also {
                     instance = it
                 }
             }
         }
     }
 
+    private val prefFileName = "pref"
+    private val prefs: SharedPreferences
+    private val prefsEditor: SharedPreferences.Editor
+
     init {
         prefs = context.getSharedPreferences(
-            PREF_FILE_NAME,
+            prefFileName,
             Context.MODE_PRIVATE
         )
         prefsEditor = prefs.edit()
