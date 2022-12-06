@@ -24,10 +24,7 @@ import androidx.security.crypto.MasterKey
 
 class ESPManager private constructor(context: Context) {
     companion object {
-        const val ENCRYPTED_PREF_FILE_NAME = "encrypted_pref"
         private var instance: ESPManager? = null
-        private lateinit var prefs: SharedPreferences
-        private lateinit var prefsEditor: SharedPreferences.Editor
 
         fun getInstance(_context: Context): ESPManager {
             return instance ?: synchronized(this) {
@@ -38,20 +35,22 @@ class ESPManager private constructor(context: Context) {
         }
     }
 
+    private val prefFileName = "encrypted_pref"
+    private val prefs: SharedPreferences
+    private val prefsEditor: SharedPreferences.Editor
+
     init {
-        val masterKeyAlias = MasterKey
+        val masterKey = MasterKey
             .Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
 
-        // EncryptedSharedPreferences.PrefKeyEncryptionScheme: The scheme to use for encrypting keys.
-        // EncryptedSharedPreferences.PrefValueEncryptionScheme: The scheme to use for encrypting values.
         prefs = EncryptedSharedPreferences.create(
             context,
-            ENCRYPTED_PREF_FILE_NAME,
-            masterKeyAlias,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            prefFileName,
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, //to use for encrypting keys.
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM //to use for encrypting values.
         )
         prefsEditor = prefs.edit()
     }
@@ -89,7 +88,7 @@ class ESPManager private constructor(context: Context) {
         }
     }
 
-    fun getKeyList(): List<String>? {
+    fun getKeyList(): List<String> {
         val keys:Map<String, *> = prefs.all
         val keyList:MutableList<String> = mutableListOf()
         for ((key, value) in keys.entries) {
