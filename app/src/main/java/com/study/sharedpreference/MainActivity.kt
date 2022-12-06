@@ -8,15 +8,15 @@ import com.study.sharedpreference.repository.ESPManager
 import com.study.sharedpreference.repository.SPManager
 
 class MainActivity : AppCompatActivity() {
-    lateinit var espManager: ESPManager
-    lateinit var preferenceManager: SPManager
+    private lateinit var espManager: ESPManager
+    private lateinit var preferenceManager: SPManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        espManager = ESPManager.getInstance(this)
-        preferenceManager = SPManager.getInstance(this)!!
+        espManager = ESPManager.getInstance(applicationContext)
+        preferenceManager = SPManager.getInstance(applicationContext)!!
     }
 
     fun testButton(v: View) {
