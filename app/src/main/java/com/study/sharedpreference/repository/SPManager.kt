@@ -8,7 +8,7 @@ import android.content.SharedPreferences
  * data > data > 패키지명 > shared_prefs > pref.xml
  */
 
-class SPManager(context: Context) {
+class SPManager private constructor(context: Context) {
     companion object {
         private var instance: SPManager? = null
 
