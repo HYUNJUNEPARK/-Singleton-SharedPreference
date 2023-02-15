@@ -4,29 +4,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.module.sharedpreferencemanager.SharedPreferencesManager
 import com.study.sharedpreference.repository.ESPManager
-import com.study.sharedpreference.repository.SPManager
 
 class MainActivity : AppCompatActivity() {
     private lateinit var espManager: ESPManager
-    private lateinit var preferenceManager: SPManager
+    private lateinit var sharedPreferencesManager: SharedPreferencesManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         espManager = ESPManager.getInstance(applicationContext)
-        preferenceManager = SPManager.getInstance(applicationContext)!!
+        sharedPreferencesManager = SharedPreferencesManager.getInstance(applicationContext)
     }
 
     fun testButton(v: View) {
-        espManager.putInt("t1", 1)
-        espManager.getInt("t1", 99).let {
-            Log.d("testLog", "testButton: $it")
-        }
-
-        preferenceManager.putString("t1", "asdf")
-        preferenceManager.getString("t1", "null").let {
+        sharedPreferencesManager.putString("t1", "asdf")
+        sharedPreferencesManager.getString("t1", "null").let {
             Log.d("testLog", "testButton: $it")
         }
     }
