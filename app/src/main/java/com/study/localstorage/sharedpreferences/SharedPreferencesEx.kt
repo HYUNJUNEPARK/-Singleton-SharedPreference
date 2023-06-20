@@ -1,4 +1,4 @@
-package com.study.sharedpreference.repository
+package com.study.localstorage.sharedpreferences
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,21 +7,20 @@ import android.content.SharedPreferences
  * XML 파일 위치
  * data > data > 패키지명 > shared_prefs > pref.xml
  */
-
-class SPManager private constructor(context: Context) {
+class SharedPreferencesEx private constructor(context: Context) {
     companion object {
-        private var instance: SPManager? = null
+        private var instance: SharedPreferencesEx? = null
 
-        fun getInstance(_context: Context): SPManager {
+        fun getInstance(_context: Context): SharedPreferencesEx {
             return instance ?: synchronized(this) {
-                instance ?: SPManager(_context).also {
+                instance ?: SharedPreferencesEx(_context).also {
                     instance = it
                 }
             }
         }
     }
 
-    private val prefFileName = "pref"
+    private val prefFileName = "shared_pref"
     private val prefs: SharedPreferences
     private val prefsEditor: SharedPreferences.Editor
 
@@ -66,13 +65,30 @@ class SPManager private constructor(context: Context) {
         }
     }
 
+    /**
+     * pref 에 저장된 모든 key 를 리스트 형태로 가져온다.
+     */
     fun getKeyList(): List<String> {
         val keys:Map<String, *> = prefs.all
         val keyList:MutableList<String> = mutableListOf()
-        for ((key, value) in keys.entries) {
+        for ((key, /*value*/_) in keys.entries) {
             keyList.add(key)
         }
         return keyList
+    }
+
+    /**
+     * pref 에 저장된 모든 key=value 를 가져온다.
+     */
+    fun getAllDataList(): HashMap<String, Any> {
+        val keys: Map<String, *> = prefs.all
+        val hashMap = HashMap<String, Any>()
+
+        for ((key, value) in keys.entries) {
+            hashMap[key] = value!!
+        }
+
+        return hashMap
     }
 
     fun remove(key: String) {

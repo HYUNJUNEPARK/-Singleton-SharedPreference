@@ -1,4 +1,4 @@
-package com.study.sharedpreference.repository
+package com.study.localstorage.sharedpreferences
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -20,15 +20,20 @@ import androidx.security.crypto.MasterKey
  * MasterKey 정보
  * 키스토어 : AndroidKeyStore
  * keyAlias : "_androidx_security_master_key_"
+ *
+ * WARNING
+ * keyset not found, will generate a new one
+ * java.io.FileNotFoundException: can't read keyset;
+ * the pref value __androidx_security_crypto_encrypted_prefs_key_keyset__ does not exist
  */
 
-class ESPManager private constructor(context: Context) {
+class EncryptedSharedPreferencesEx private constructor(context: Context) {
     companion object {
-        private var instance: ESPManager? = null
+        private var instance: EncryptedSharedPreferencesEx? = null
 
-        fun getInstance(_context: Context): ESPManager {
+        fun getInstance(_context: Context): EncryptedSharedPreferencesEx {
             return instance ?: synchronized(this) {
-                instance ?: ESPManager(_context).also {
+                instance ?: EncryptedSharedPreferencesEx(_context).also {
                     instance = it
                 }
             }
@@ -91,7 +96,7 @@ class ESPManager private constructor(context: Context) {
     fun getKeyList(): List<String> {
         val keys:Map<String, *> = prefs.all
         val keyList:MutableList<String> = mutableListOf()
-        for ((key, value) in keys.entries) {
+        for ((key, /*value*/_) in keys.entries) {
             keyList.add(key)
         }
         return keyList

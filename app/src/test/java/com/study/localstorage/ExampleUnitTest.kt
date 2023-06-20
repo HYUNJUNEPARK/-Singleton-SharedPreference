@@ -1,4 +1,4 @@
-package com.study.sharedpreference
+package com.study.localstorage
 
 import org.junit.Test
 
