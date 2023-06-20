@@ -28,14 +28,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{()->mainActivity.onTestButton2Clicked()}"
-            android:text="RoomTest"
+            android:text="DataStoreTest"
             android:textAllCaps="false" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{()->mainActivity.onTestButton3Clicked()}"
-            android:text="DataStoreTest"
+            android:text="RoomTest"
             android:textAllCaps="false" />
     </LinearLayout>
 </layout>

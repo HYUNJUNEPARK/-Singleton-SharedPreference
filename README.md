@@ -27,3 +27,9 @@ SharedPreferences vs DataStore vs Room
 
 SharedPreferences vs DataStore vs Room</br>
 https://onlyfor-me-blog.tistory.com/519</br>
+
+[Android/Kotlin] SharedPreferences 대신 쓰는 DataStore</br>
+https://kangmin1012.tistory.com/47</br>
+
+Android in A..Z - DataStore</br>
+https://rkdxowhd98.tistory.com/148</br>
